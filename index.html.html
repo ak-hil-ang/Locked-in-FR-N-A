@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Important System Process</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+            transition: background 0.4s;
+        }
+
+        h1 {
+            margin-top: 20%;
+            font-size: 2.5em;
+            transition: 0.3s;
+            z-index: 2;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .buttons {
+            margin-top: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        button {
+            padding: 15px 35px;
+            font-size: 18px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin: 10px;
+        }
+
+        #yesBtn { background: pink; }
+        #noBtn {
+            background: gray;
+            position: absolute;
+        }
+
+        #finalMessage {
+            display: none;
+            font-size: 1.6em;
+            margin-top: 10%;
+            padding: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* SHAKE */
+        .shake { animation: shake 0.2s; }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-15px); }
+            50% { transform: translateX(15px); }
+            75% { transform: translateX(-15px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* HEARTS */
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            to {
+                transform: translateY(-110vh);
+                opacity: 0;
+            }
+        }
+
+        /* CONFETTI */
+        .confetti {
+            position: absolute;
+            top: 0;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Fake popup */
+        .popup {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: red;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 999;
+            animation: shake 0.3s infinite;
+        }
+    </style>
+</head>
+<body>
+
+<h1 id="mainText">Initializing Romantic Protocol...</h1>
+
+<div class="buttons" id="buttons" style="display:none;">
+    <button id="yesBtn">Yes 😇</button>
+    <button id="noBtn">No 😈</button>
+</div>
+
+<div id="finalMessage"></div>
+
+<script>
+    const mainText = document.getElementById("mainText");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const finalMessage = document.getElementById("finalMessage");
+    const buttons = document.getElementById("buttons");
+
+    let noCount = 0;
+
+    // Fake loading sequence
+    setTimeout(() => mainText.innerHTML = "Calculating compatibility...", 1500);
+    setTimeout(() => mainText.innerHTML = "Analyzing smile brightness...", 3000);
+    setTimeout(() => mainText.innerHTML = "Scanning chaos levels...", 4500);
+    setTimeout(() => mainText.innerHTML = "Compatibility result: 1000% 💖", 6000);
+
+    setTimeout(() => {
+        mainText.innerHTML = "Nisha, will you be my Valentine?";
+        buttons.style.display = "block";
+    }, 7500);
+
+    // NO BUTTON CHAOS
+    noBtn.addEventListener("mouseover", () => {
+        noCount++;
+
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 50);
+
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+
+        noBtn.style.transform = "scale(" + (1 - noCount * 0.1) + ")";
+        yesBtn.style.transform = "scale(" + (1 + noCount * 0.25) + ")";
+
+        document.body.classList.add("shake");
+        setTimeout(() => document.body.classList.remove("shake"), 200);
+
+        const warnings = [
+            "WARNING: Wrong choice detected.",
+            "System rejecting negativity.",
+            "Nice try.",
+            "Access denied.",
+            "That button is unavailable.",
+            "Please select the glowing one."
+        ];
+
+        mainText.innerHTML = warnings[Math.min(noCount - 1, warnings.length - 1)];
+
+        if (noCount > 4) {
+            const popup = document.createElement("div");
+            popup.classList.add("popup");
+            popup.innerText = "ERROR: 'No' has stopped working.";
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 1500);
+        }
+    });
+
+    // YES CLICK
+    yesBtn.addEventListener("click", () => {
+        document.body.style.background = "#ff4da6";
+        mainText.style.display = "none";
+        buttons.style.display = "none";
+
+        finalMessage.innerHTML = `
+        Nisha,<br><br>
+        I may not be the strongest, smartest, coolest boyfriend around, 
+        but what i can promise you is that i will always be there through thick and thin 
+        as I've shown you over this past year, i will always LOVE every version of you.<br><br>
+        No matter what we may go through, i will ALWAYS ALWAYS ALWAYS be with you, 
+        coz we LOCKED IN FR.<br><br>
+        I LOVE YOU my forever Valentine :)
+        `;
+
+        finalMessage.style.display = "block";
+
+        launchConfetti();
+        startHeartStorm();
+    });
+
+    // HEART STORM
+    function startHeartStorm() {
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerText = ["💖","💘","💗","💞"][Math.floor(Math.random()*4)];
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = (Math.random() * 40 + 20) + "px";
+            heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }, 100);
+    }
+
+    // CONFETTI
+    function launchConfetti() {
+        for (let i = 0; i < 200; i++) {
+            const confetti = document.createElement("div");
+            confetti.classList.add("confetti");
+            confetti.style.left = Math.random() * 100 + "vw";
+            confetti.style.width = (Math.random()*10+5)+"px";
+            confetti.style.height = confetti.style.width;
+            confetti.style.backgroundColor =
+                ["red","pink","white","purple","yellow","cyan"][Math.floor(Math.random()*6)];
+            confetti.style.animationDuration = (Math.random()*3+2)+"s";
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 5000);
+        }
+    }
+</script>
+
+</body>
+</html>
